@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Love Calculator 💕</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;font-family:Arial,sans-serif;background:linear-gradient(135deg,#ffd6e7,#fff0f6,#ffc1da);display:flex;justify-content:center;align-items:center;color:#7d1738}
+.card{width:min(92%,720px);margin:25px auto;padding:38px 25px;background:rgba(255,255,255,.9);border-radius:30px;box-shadow:0 20px 60px rgba(190,35,91,.2);text-align:center}
+h1{font-size:clamp(40px,9vw,70px);margin:0 0 8px;color:#df1659}
+.subtitle{font-size:19px;margin-bottom:30px}
+.names{display:flex;gap:16px;align-items:center}.field{flex:1;text-align:left}
+label{display:block;font-weight:bold;margin-bottom:8px}
+input{width:100%;padding:16px;border:2px solid #ff82ae;border-radius:16px;font-size:18px;outline:none}
+.heart{font-size:40px}
+button{border:0;background:linear-gradient(135deg,#ff2f76,#e91559);color:white;font-size:19px;font-weight:bold;padding:16px 30px;border-radius:999px;cursor:pointer;margin-top:25px;box-shadow:0 8px 20px rgba(226,20,88,.25)}
+button:active{transform:scale(.97)}
+#result{display:none;margin-top:30px;padding:28px 18px;border-radius:25px;background:#fff0f6}
+.score{font-size:clamp(70px,16vw,125px);font-weight:900;color:#ed155a;line-height:1;margin:12px 0}
+.true{font-size:32px;font-weight:bold}.message{font-size:18px;line-height:1.5}
+.error{color:#d51a55;font-weight:bold;margin-top:15px;display:none}
+.small{font-size:14px;opacity:.65;margin-top:20px}
+@media(max-width:600px){.names{flex-direction:column}.heart{margin:-5px 0}.field{width:100%}}
+</style>
+</head>
+<body>
+<div class="card">
+<h1>Love Calculator 💕</h1>
+<div class="subtitle">Find out how much two hearts belong together ❤️</div>
+
+<form id="loveForm">
+<div class="names">
+<div class="field"><label for="name1">Your Name</label><input id="name1" placeholder="Enter your name" autocomplete="off"></div>
+<div class="heart">💘</div>
+<div class="field"><label for="name2">Their Name</label><input id="name2" placeholder="Enter their name" autocomplete="off"></div>
+</div>
+<div id="error" class="error">Please enter both names 💗</div>
+<button type="submit">Calculate Love ✨</button>
+</form>
+
+<div id="result">
+<div>💗 YOUR LOVE SCORE 💗</div>
+<div id="score" class="score"></div>
+<div id="status" class="true"></div>
+<div id="couple" style="font-size:20px;margin:10px 0"></div>
+<p id="message" class="message"></p>
+<button type="button" onclick="resetCalc()">Try Again 🔄</button>
+</div>
+<div class="small">Made with ❤️ for love</div>
+</div>
+
+<script>
+const form=document.getElementById('loveForm');
+form.addEventListener('submit',function(e){
+ e.preventDefault();
+ const a=document.getElementById('name1').value.trim();
+ const b=document.getElementById('name2').value.trim();
+ const error=document.getElementById('error');
+ if(!a||!b){error.style.display='block';return}
+ error.style.display='none';
+
+ // Secret special result requested: ANANDA + PRIYANSHU = 10000%
+ const pair=[a.toUpperCase(),b.toUpperCase()].sort().join('|');
+ let score;
+ if(pair==='ANANDA|PRIYANSHU') score=10000;
+ else {
+   let hash=0;
+   const text=a.toUpperCase()+b.toUpperCase();
+   for(let i=0;i<text.length;i++) hash=(hash*31+text.charCodeAt(i))%101;
+   score=50+(hash%51);
+ }
+ document.getElementById('score').textContent=score+'%';
+ document.getElementById('status').textContent=score===10000?'INFINITE TRUE LOVE ❤️':'True Love 💕';
+ document.getElementById('couple').innerHTML='<strong>'+safe(a.toUpperCase())+'</strong> ❤️ <strong>'+safe(b.toUpperCase())+'</strong>';
+ document.getElementById('message').innerHTML=score===10000
+ ? 'You two are a perfect match made in heaven!<br>Your love is infinite and beyond! 💕✨'
+ : score>=90?'The stars are definitely smiling on you two! 💖':score>=75?'There is some serious chemistry here! 💕':'There is definitely a spark! ✨';
+ document.getElementById('result').style.display='block';
+ document.getElementById('result').scrollIntoView({behavior:'smooth',block:'center'});
+});
+function resetCalc(){
+ document.getElementById('result').style.display='none';
+ document.getElementById('name1').value='';
+ document.getElementById('name2').value='';
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+function safe(s){return s.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+</script>
+</body>
+</html>
